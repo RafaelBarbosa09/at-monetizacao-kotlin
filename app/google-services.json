@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "707688247059",
+    "project_id": "tp3-monetizacao",
+    "storage_bucket": "tp3-monetizacao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707688247059:android:732b78d3798fbdb6da34e6",
+        "android_client_info": {
+          "package_name": "br.edu.infnet.at_monetizacao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707688247059-u4ev765oo8vqlae3nh8a9fobuoiqmtlf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIdIv4b5YOnfatKW7jf6iE_oEhh_dvPAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707688247059-u4ev765oo8vqlae3nh8a9fobuoiqmtlf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
