@@ -20,4 +20,9 @@
         android:name="br.edu.infnet.at_monetizacao.HomeActivity"
         android:label="activity_home"
         tools:layout="@layout/activity_home" />
+    <fragment
+        android:id="@+id/cadastroAnotacaoFragment"
+        android:name="br.edu.infnet.at_monetizacao.ui.anotacao.CadastroAnotacaoFragment"
+        android:label="fragment_cadastro_anotacao"
+        tools:layout="@layout/fragment_cadastro_anotacao" />
 </navigation>

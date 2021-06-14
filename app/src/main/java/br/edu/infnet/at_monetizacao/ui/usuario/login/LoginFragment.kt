@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
 
         viewModel.sucesso.observe(viewLifecycleOwner, Observer {
             if(it)
-                findNavController().navigate(R.id.homeActivity)
+                findNavController().navigate(R.id.cadastroAnotacaoFragment)
         })
 
         return view
