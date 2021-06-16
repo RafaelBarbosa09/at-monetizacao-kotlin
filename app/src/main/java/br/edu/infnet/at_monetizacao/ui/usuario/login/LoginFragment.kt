@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
 
         viewModel.sucesso.observe(viewLifecycleOwner, Observer {
             if(it)
-                findNavController().navigate(R.id.cadastroAnotacaoFragment)
+                findNavController().navigate(R.id.homeFragment)
         })
 
         return view
@@ -56,4 +56,13 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
+    }
 }
