@@ -1,35 +1,28 @@
 package br.edu.infnet.at_monetizacao.ui.home
 
-import android.app.ActionBar
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.security.crypto.EncryptedFile
+import androidx.security.crypto.MasterKeys
 import br.edu.infnet.at_monetizacao.R
 import br.edu.infnet.at_monetizacao.adapter.AnotacaoAdapter
 import br.edu.infnet.at_monetizacao.domain.entity.Anotacao
 import br.edu.infnet.at_monetizacao.domain.entity.AnotacaoUtil
-import br.edu.infnet.at_monetizacao.domain.entity.Arquivo
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.home_fragment.*
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
-import java.util.*
-import java.util.stream.Stream
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
@@ -63,17 +56,6 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    fun retornaListaDeAnotacoes(lista: Array<String>): ArrayList<Anotacao> {
-        var listaTeste = ArrayList<Anotacao>()
-        if (lista != null) {
-            for(item in lista) {
-                var anotacao = Anotacao(null, null, null, item, null)
-                listaTeste.add(anotacao)
-            }
-        }
-        return listaTeste
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -88,34 +70,53 @@ class HomeFragment : Fragment() {
 
     }
 
+    fun retornaListaDeAnotacoes(lista: Array<String>): ArrayList<Anotacao> {
+        var listaTeste = ArrayList<Anotacao>()
+        if (lista != null) {
+            for(item in lista) {
+                var anotacao = Anotacao(null, null, null, item, null)
+                listaTeste.add(anotacao)
+            }
+        }
+        return listaTeste
+    }
+
     private fun setupAnotacoesList(anotacoes: List<Anotacao>) {
         recyclerView.adapter = AnotacaoAdapter(anotacoes) {
-//            val encryptedIn: FileInputStream = FileInputStream(File(context?.filesDir, it.title))
-//            val br = BufferedReader(InputStreamReader(encryptedIn))
-//
-//            var list: ArrayList<String> = ArrayList()
-//            br.lines().forEach {
-//                    t -> list.add(t)
-//            }
-//
-//            it.title = list[0]
-//            it.description = list[1]
-//            AnotacaoUtil.anotacaoSelecionada = it
-//
-//            encryptedIn.close()
-            AnotacaoUtil.anotacaoSelecionada = it
+
+            val arquivo = lerArquivo(it)
+            AnotacaoUtil.anotacaoSelecionada = arquivo
+
             findNavController().navigate(R.id.anotacaoShowFragment)
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    fun clickLer(view: View){
-        val encryptedIn: FileInputStream = FileInputStream(File(context?.filesDir, "teste ler.txt"))
+    fun lerArquivo(arquivo: Anotacao): Anotacao {
+        val encryptedIn: FileInputStream = getEncFile(arquivo.title.toString()).openFileInput()
         val br = BufferedReader(InputStreamReader(encryptedIn))
 
+        var list: ArrayList<String> = ArrayList()
         br.lines().forEach {
-            t -> Log.d("LEITURA: ", t)
+                t -> list.add(t)
         }
+
+        arquivo.title = list[0]
+        arquivo.description = list[1]
         encryptedIn.close()
+
+        return arquivo
+    }
+
+    private fun getEncFile(nome: String): EncryptedFile {
+        val masterKeyAlias: String = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+        val file = File(context?.filesDir, nome)
+
+        return EncryptedFile.Builder(
+            file,
+            requireContext(),
+            masterKeyAlias,
+            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB)
+            .build()
     }
 }

@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,14 +22,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
 import br.edu.infnet.at_monetizacao.R
-import br.edu.infnet.at_monetizacao.domain.entity.Anotacao
-import br.edu.infnet.at_monetizacao.domain.entity.Arquivo
 import br.edu.infnet.at_monetizacao.domain.service.AnotacaoService
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_cadastro_anotacao.*
 import java.io.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CadastroAnotacaoFragment : Fragment() {
 
@@ -86,11 +82,13 @@ class CadastroAnotacaoFragment : Fragment() {
 
             var picture = bitmapPicture
 
-            viewModel.salvarAnotacao(editTextTitulo, editTextDescricao, picture)
-
-            clickGravar(it, editTextTitulo, editTextDescricao)
-
-            view.findNavController().popBackStack()
+            if(!editTextTitulo.isNullOrBlank() || !editTextDescricao.isNullOrBlank()) {
+                viewModel.salvarAnotacao(editTextTitulo, editTextDescricao, picture)
+                clickGravar(it, editTextTitulo, editTextDescricao)
+                view.findNavController().popBackStack()
+            } else {
+                Toast.makeText(requireContext(), "É necessário preencher todos os campos", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -114,18 +112,6 @@ class CadastroAnotacaoFragment : Fragment() {
         pw.flush()
         encryptedOut.close()
     }
-
-    fun clickLer(view: View){
-        val encryptedIn: FileInputStream = getEncFile("teste ler.txt").openFileInput()
-        val br = BufferedReader(InputStreamReader(encryptedIn))
-
-        br.lines().forEach {
-            t -> Log.d("LEITURA: ",t)
-        }
-        encryptedIn.close()
-    }
-
-
 
     private fun salvarFoto(view: View) {
         if(ContextCompat.checkSelfPermission(requireContext(),  Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
