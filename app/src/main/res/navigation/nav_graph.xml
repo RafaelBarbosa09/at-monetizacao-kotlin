@@ -30,4 +30,9 @@
         android:name="br.edu.infnet.at_monetizacao.ui.home.HomeFragment"
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/anotacaoShowFragment"
+        android:name="br.edu.infnet.at_monetizacao.ui.show.AnotacaoShowFragment"
+        android:label="fragment_anotacao_show"
+        tools:layout="@layout/fragment_anotacao_show" />
 </navigation>

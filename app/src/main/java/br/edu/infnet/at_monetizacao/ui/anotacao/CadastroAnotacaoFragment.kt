@@ -23,11 +23,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKeys
 import br.edu.infnet.at_monetizacao.R
+import br.edu.infnet.at_monetizacao.domain.entity.Anotacao
+import br.edu.infnet.at_monetizacao.domain.entity.Arquivo
 import br.edu.infnet.at_monetizacao.domain.service.AnotacaoService
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_cadastro_anotacao.*
 import java.io.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CadastroAnotacaoFragment : Fragment() {
 
@@ -49,6 +52,9 @@ class CadastroAnotacaoFragment : Fragment() {
 
         firebaseAuthService = FirebaseAuth.getInstance()
         viewModel = CadastroAnotacaoViewModel()
+
+        val path = context?.getFilesDir()
+        Log.d("ARQUIVOS: ", path.toString())
 
         return view
     }
