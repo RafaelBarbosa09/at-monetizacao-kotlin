@@ -11,11 +11,11 @@ class HomeViewModel : ViewModel() {
     private val _anotacoes = MutableLiveData<List<Anotacao>>();
     val anotacoes: LiveData<List<Anotacao>> = _anotacoes
 
-    init {
-
+    fun listaAnotacoes(lista: List<Anotacao>) {
+        _anotacoes.value = lista
     }
 
-    fun listaAnotacoes() {
-        _anotacoes.value = Arquivo.listaArquivosMock
-    }
+//    fun listaAnotacoes() {
+//        _anotacoes.value = Arquivo.listaArquivosMock
+//    }
 }

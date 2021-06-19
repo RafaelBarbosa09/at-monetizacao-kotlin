@@ -53,9 +53,6 @@ class CadastroAnotacaoFragment : Fragment() {
         firebaseAuthService = FirebaseAuth.getInstance()
         viewModel = CadastroAnotacaoViewModel()
 
-        val path = context?.getFilesDir()
-        Log.d("ARQUIVOS: ", path.toString())
-
         return view
     }
 

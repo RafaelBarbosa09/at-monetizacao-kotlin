@@ -28,11 +28,16 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
+import java.util.*
+import java.util.stream.Stream
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var firebaseAuthService: FirebaseAuth
+    var path: File ?= null
+    var listaDeArquivos: ArrayList<Anotacao> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,13 +49,29 @@ class HomeFragment : Fragment() {
         firebaseAuthService = FirebaseAuth.getInstance()
         viewModel = ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
 
-        viewModel.listaAnotacoes()
+        path = context?.getFilesDir()
+        val lista = path?.list()
+
+        listaDeArquivos = lista?.let { retornaListaDeAnotacoes(it) }!!
+
+        viewModel.listaAnotacoes(listaDeArquivos)
 
         viewModel.anotacoes.observe(viewLifecycleOwner, Observer {
             setupAnotacoesList(it)
         })
 
         return view
+    }
+
+    fun retornaListaDeAnotacoes(lista: Array<String>): ArrayList<Anotacao> {
+        var listaTeste = ArrayList<Anotacao>()
+        if (lista != null) {
+            for(item in lista) {
+                var anotacao = Anotacao(null, null, null, item, null)
+                listaTeste.add(anotacao)
+            }
+        }
+        return listaTeste
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,6 +90,19 @@ class HomeFragment : Fragment() {
 
     private fun setupAnotacoesList(anotacoes: List<Anotacao>) {
         recyclerView.adapter = AnotacaoAdapter(anotacoes) {
+//            val encryptedIn: FileInputStream = FileInputStream(File(context?.filesDir, it.title))
+//            val br = BufferedReader(InputStreamReader(encryptedIn))
+//
+//            var list: ArrayList<String> = ArrayList()
+//            br.lines().forEach {
+//                    t -> list.add(t)
+//            }
+//
+//            it.title = list[0]
+//            it.description = list[1]
+//            AnotacaoUtil.anotacaoSelecionada = it
+//
+//            encryptedIn.close()
             AnotacaoUtil.anotacaoSelecionada = it
             findNavController().navigate(R.id.anotacaoShowFragment)
         }
