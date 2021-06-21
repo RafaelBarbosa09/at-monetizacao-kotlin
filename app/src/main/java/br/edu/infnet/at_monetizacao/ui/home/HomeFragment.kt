@@ -17,6 +17,9 @@ import br.edu.infnet.at_monetizacao.R
 import br.edu.infnet.at_monetizacao.adapter.AnotacaoAdapter
 import br.edu.infnet.at_monetizacao.domain.entity.Anotacao
 import br.edu.infnet.at_monetizacao.domain.entity.AnotacaoUtil
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.home_fragment.*
 import java.io.BufferedReader
@@ -67,6 +70,15 @@ class HomeFragment : Fragment() {
         btnAddAnotacao.setOnClickListener {
             view.findNavController().navigate(R.id.cadastroAnotacaoFragment)
         }
+
+        //Inicialização do Google AdMob
+        MobileAds.initialize(requireContext())
+        //Widget que exibirá o anúncio
+        val adView = view.findViewById<AdView>(R.id.adView)
+        //Requisitar um anúncio
+        val adRequest = AdRequest.Builder().build()
+        //Lançar o anúncio no widget próprio
+        adView.loadAd(adRequest)
 
     }
 

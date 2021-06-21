@@ -14,6 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Atmonetizacao">
+
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8150501201695851~3353469535" />
+
         <activity android:name=".HomeActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
