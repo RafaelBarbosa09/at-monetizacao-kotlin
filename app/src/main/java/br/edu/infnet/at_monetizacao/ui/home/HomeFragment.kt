@@ -74,7 +74,7 @@ class HomeFragment : Fragment() {
         var listaTeste = ArrayList<Anotacao>()
         if (lista != null) {
             for(item in lista) {
-                var anotacao = Anotacao(null, null, null, item, null)
+                var anotacao = Anotacao(null, null, null, item, "")
                 listaTeste.add(anotacao)
             }
         }

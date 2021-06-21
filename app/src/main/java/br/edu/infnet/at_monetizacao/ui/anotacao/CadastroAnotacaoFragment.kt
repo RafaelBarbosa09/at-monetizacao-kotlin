@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
@@ -26,6 +28,8 @@ import br.edu.infnet.at_monetizacao.domain.service.AnotacaoService
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_cadastro_anotacao.*
 import java.io.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class CadastroAnotacaoFragment : Fragment() {
@@ -52,6 +56,7 @@ class CadastroAnotacaoFragment : Fragment() {
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -80,11 +85,15 @@ class CadastroAnotacaoFragment : Fragment() {
             fOut.flush()
             fOut.close()
 
+            val currentDateTime = LocalDateTime.now()
+            var currentDateTimeFormat = currentDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+            var TituloComData = "$editTextTitulo($currentDateTimeFormat)"
+
             var picture = bitmapPicture
 
             if(!editTextTitulo.isNullOrBlank() || !editTextDescricao.isNullOrBlank()) {
                 viewModel.salvarAnotacao(editTextTitulo, editTextDescricao, picture)
-                clickGravar(it, editTextTitulo, editTextDescricao)
+                clickGravar(it, TituloComData, editTextDescricao)
                 view.findNavController().popBackStack()
             } else {
                 Toast.makeText(requireContext(), "É necessário preencher todos os campos", Toast.LENGTH_LONG).show()
