@@ -17,6 +17,7 @@ import br.edu.infnet.at_monetizacao.R
 import br.edu.infnet.at_monetizacao.adapter.AnotacaoAdapter
 import br.edu.infnet.at_monetizacao.domain.entity.Anotacao
 import br.edu.infnet.at_monetizacao.domain.entity.AnotacaoUtil
+import br.edu.infnet.at_monetizacao.ui.usuario.login.LoginViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -31,6 +32,7 @@ import kotlin.collections.ArrayList
 class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
+    private lateinit var signInViewModel: LoginViewModel
     private lateinit var firebaseAuthService: FirebaseAuth
     var path: File ?= null
     var listaDeArquivos: ArrayList<Anotacao> = ArrayList()
@@ -70,6 +72,12 @@ class HomeFragment : Fragment() {
         btnAddAnotacao.setOnClickListener {
             view.findNavController().navigate(R.id.cadastroAnotacaoFragment)
         }
+
+        firebaseAuthService = FirebaseAuth.getInstance()
+
+        var emailUsuarioLocado = firebaseAuthService.currentUser?.email
+
+        usuarioLogado.text = "Bem vindo, ${emailUsuarioLocado.toString()}"
 
         //Inicialização do Google AdMob
         MobileAds.initialize(requireContext())
